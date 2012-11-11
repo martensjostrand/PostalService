@@ -53,16 +53,6 @@ class TCPServer(port: Int) extends Actor with ActorLogging {
     }
   }
 }
-  
-
-class TCPSender(socketAddress: InetSocketAddress) extends Actor with ActorLogging {
-  def receive = {
-    case message:String => {
-    	IOManager(context.system).connect(socketAddress).write(ByteString(message))
-    	log.debug("Sending '{}' to {}:{}", message, socketAddress.getHostName(), socketAddress.getPort());
-    }
-  }
-}
 
 object PostalService extends App{
 	val port = Option(System.getenv("PORT")) map (_.toInt) getOrElse 8080
