@@ -10,9 +10,7 @@ case class ActionData(@JsonProperty("command") command: String,
                       @JsonProperty("args") args: List[String]) extends MessageData
 
 @JsonCreator
-case class RegisterData(@JsonProperty("host") host: String,
-						@JsonProperty("port") port: Int, 
-						@JsonProperty("actions") actions: List[String]) extends MessageData
+case class RegisterData(@JsonProperty("actions") actions: List[String]) extends MessageData
 
 /*sealed case class Message()*/
 sealed case class Message(data: MessageData, typeName: String)

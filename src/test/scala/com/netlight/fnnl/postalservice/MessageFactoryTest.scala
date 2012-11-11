@@ -13,7 +13,7 @@ case class MyClass(@JsonProperty("name") name: String)
 class MessageFactoryTest extends Specification {
 	"A MessageFactory" should {
 	  "Handle Register messages" in {
-        testRoundTrip(Register(RegisterData("myhost", 9090, List("action1", "action2"))))
+        testRoundTrip(Register(RegisterData(List("action1", "action2"))))
 	  }
 	  "Handle Action messages" in {
 	    testRoundTrip(Action(ActionData("walk", List("left", "100m"))))
