@@ -1,11 +1,13 @@
 import sbt._
 import Keys._
+import sbtassembly.Plugin._
+import AssemblyKeys._
 
 object Build extends Build{
   lazy val root = Project(
     id = "root",
     base = file("."),
-    settings = Project.defaultSettings ++ Seq(
+    settings = Project.defaultSettings ++ assemblySettings ++ Seq(
       name := "PostalService",
       organization := "com.netlight.fnnl",
       version := "1.0-SNAPSHOT",
