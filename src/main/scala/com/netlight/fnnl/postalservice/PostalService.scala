@@ -2,27 +2,27 @@ package com.netlight.fnnl.postalservice
 
 import akka.actor._
 import java.net.InetSocketAddress
-
 import akka.event.Logging
 import akka.actor.IO.SocketHandle
 import akka.util.ByteString
 import scala.collection._
 
-class MessageHandler(listeners: mutable.HashMap[String, List[InetSocketAddress]]){
+class MessageHandler(listeners: mutable.HashMap[String, List[SocketHandle]]){
   
-  def dispatch(message: Message) = {
+  def dispatch(message: Message, socket: SocketHandle) = {
     message match {
       case action:Action => {
-          listeners.getOrElse(action.data.command, Nil) map {address =>
-        	ActorSystem().actorOf(Props(new TCPSender(address))) ! MessageFactory.create(action)  
+        /* Send message to all registered sockets */  
+        listeners.getOrElse(action.data.command, Nil) map {socket =>
+        	socket.write(MessageFactory.create(action));  
         }
       }
       case Register(registration) => {
-        val address = new InetSocketAddress(registration.host, registration.port); 
+        /* Add socket to actions */
         for(action <- registration.actions){
-          val sockets = listeners.getOrElse(action, List[InetSocketAddress]());
-          val updatedSockets = address :: sockets;
-       	  listeners.put(action, updatedSockets);
+          val sockets = listeners.getOrElse(action, List[SocketHandle]());
+          val updatedSockets = socket :: sockets
+       	  listeners.put(action, updatedSockets)
         }
       }
     }
@@ -30,8 +30,8 @@ class MessageHandler(listeners: mutable.HashMap[String, List[InetSocketAddress]]
 }
 
 class TCPServer(port: Int) extends Actor with ActorLogging {
-  val messageHandler = new MessageHandler(listeners);
-  val listeners = mutable.HashMap[String, List[InetSocketAddress]]();
+  val sockets = mutable.HashMap[String, List[SocketHandle]]()
+  val messageHandler = new MessageHandler(sockets)
   
   override def preStart {
     log.debug("Listening for TCP connections on port {}", port)
@@ -41,10 +41,15 @@ class TCPServer(port: Int) extends Actor with ActorLogging {
   def receive = {
     case IO.NewClient(server) => {
       log.debug("Accepting new connection")
-      server.accept()}
+      server.accept()
+      // Create an actor with this socket for future communication.
+    }
+      	
     case IO.Read(rHandle, bytes) => {
-      val message = MessageFactory.create(bytes);
-      messageHandler.dispatch(message);
+      val socket = rHandle.asSocket;
+      val message = MessageFactory.create(bytes)
+      log.debug("Got message: {}", message)
+      messageHandler.dispatch(message, socket);
     }
   }
 }
