@@ -4,13 +4,13 @@ import akka.actor.IO.SocketHandle
 import scala.collection.mutable.HashMap
 
 class MessageHandler(listeners: HashMap[String, List[SocketHandle]]) {
-
+  val messageFactory = new MessageFactory()
   def dispatch(message: Message, socket: SocketHandle) = {
     message match {
       case action: Action => {
         /* Send message to all registered sockets */
         listeners.getOrElse(action.data.command, Nil) map { socket =>
-          socket.write(MessageFactory.create(action));
+          socket.write(messageFactory.create(action));
         }
       }
       case Register(registration) => {

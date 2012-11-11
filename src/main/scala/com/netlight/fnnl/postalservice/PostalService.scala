@@ -11,7 +11,7 @@ import scala.actors.Logger
 class TCPServer(port: Int) extends Actor with ActorLogging {
   val sockets = mutable.HashMap[String, List[SocketHandle]]()
   val messageHandler = new MessageHandler(sockets)
-
+  val messageFactory = new MessageFactory()
   override def preStart {
     log.debug("Listening for TCP connections on port {}", port)
     IOManager(context.system) listen new InetSocketAddress(port)
@@ -26,7 +26,7 @@ class TCPServer(port: Int) extends Actor with ActorLogging {
 
     case IO.Read(rHandle, bytes) => {
       val socket = rHandle.asSocket;
-      val message = MessageFactory.create(bytes)
+      val message = messageFactory.create(bytes)
       log.debug("Got message: {}", message)
       messageHandler.dispatch(message, socket);
     }

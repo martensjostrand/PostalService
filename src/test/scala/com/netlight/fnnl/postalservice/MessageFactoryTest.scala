@@ -11,6 +11,9 @@ import com.fasterxml.jackson.module.scala.DefaultScalaModule
 case class MyClass(@JsonProperty("name") name: String)
 
 class MessageFactoryTest extends Specification {
+	
+  val messageFactory = new MessageFactory()
+  
 	"A MessageFactory" should {
 	  "Handle Register messages" in {
         testRoundTrip(Register(RegisterData(List("action1", "action2"))))
@@ -19,7 +22,7 @@ class MessageFactoryTest extends Specification {
 	    testRoundTrip(Action(ActionData("walk", List("left", "100m"))))
 	  }
 	  "Handle empty messages" in {
-	    val actual = MessageFactory.create(ByteString(""))
+	    val actual = messageFactory.create(ByteString(""))
 	    actual must be equalTo Unknown()
 	  }
 	  "Handle malformed json" in {
@@ -35,10 +38,10 @@ class MessageFactoryTest extends Specification {
 	}
 	
 	def asMessage(bytes: ByteString): Message = {
-	  MessageFactory.create(bytes)
+	  messageFactory.create(bytes)
 	}
 	
 	def asByteString(message: Message) : ByteString = {
-	  MessageFactory.create(message)
+	  messageFactory.create(message)
 	}
 }
