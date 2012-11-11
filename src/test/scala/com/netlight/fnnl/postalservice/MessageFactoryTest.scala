@@ -18,6 +18,14 @@ class MessageFactoryTest extends Specification {
 	  "Handle Action messages" in {
 	    testRoundTrip(Action(ActionData("walk", List("left", "100m"))))
 	  }
+	  "Handle empty messages" in {
+	    val actual = MessageFactory.create(ByteString(""))
+	    actual must be equalTo Unknown()
+	  }
+	  "Handle malformed json" in {
+	    val actual = ByteString("""action: {"bla": 6, "args":{[}""")
+	    asMessage(actual) must be equalTo Unknown()
+	  }
 	}
 	
 	def testRoundTrip(expected: Message){

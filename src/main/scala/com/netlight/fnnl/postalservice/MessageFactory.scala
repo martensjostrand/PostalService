@@ -2,6 +2,8 @@ package com.netlight.fnnl.postalservice
 import akka.util.ByteString
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
+import com.fasterxml.jackson.core.JsonParseException
+import com.fasterxml.jackson.core.JsonProcessingException
 
 
 
@@ -11,17 +13,30 @@ object MessageFactory {
   
   def create(data: ByteString): Message = {
     val stringData = data.decodeString("utf-8")
-    val firstColonIndex = stringData.indexOf(":");
-    val messageType = stringData.substring(0, firstColonIndex)
-    val messageData = stringData.substring(firstColonIndex+1)
-    
-    if("register".equals(messageType)){    
-      val registerData = mapper.readValue(messageData, classOf[RegisterData])
-      return Register(registerData)
+    MessageParser.parse(stringData) match {
+      case Sucessful(messageType, messageData) => {
+        buildMessage(messageType, messageData)
+      }
+      case Unsucessful() => {
+        Unknown()
+      }
     }
-    if ("action".equals(messageType)) {
-       val actionData = mapper.readValue(messageData, classOf[ActionData])
-       return Action(actionData)
+  }
+  
+  
+  
+  def buildMessage(messageType:String, messageData:String): Message = {
+    try {
+      if("register".equals(messageType)){
+        val registerData = mapper.readValue(messageData, classOf[RegisterData])
+        return Register(registerData)
+      }
+      if ("action".equals(messageType)) {
+        val actionData = mapper.readValue(messageData, classOf[ActionData])
+        return Action(actionData)
+      }
+    } catch {
+      case jpe:JsonProcessingException => Unknown() 
     }
     return Unknown()
   }
