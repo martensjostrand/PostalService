@@ -6,13 +6,11 @@ import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.core.JsonProcessingException
 import org.slf4j.LoggerFactory
 
-
-
 class MessageFactory {
   val log = LoggerFactory.getLogger(classOf[MessageFactory])
   val mapper = new ObjectMapper()
   mapper.registerModule(DefaultScalaModule)
-  
+
   def create(data: ByteString): Message = {
     val stringData = data.decodeString("utf-8")
     log.debug("Creting message from {}", stringData)
@@ -27,9 +25,9 @@ class MessageFactory {
     }
   }
 
-  def buildMessage(messageType:String, messageData:String): Message = {
+  def buildMessage(messageType: String, messageData: String): Message = {
     try {
-      if("register".equals(messageType)){
+      if ("register".equals(messageType)) {
         val registerData = mapper.readValue(messageData, classOf[RegisterData])
         return Register(registerData)
       }
@@ -38,16 +36,17 @@ class MessageFactory {
         return Action(actionData)
       }
     } catch {
-      case jpe:JsonProcessingException => {
+      case jpe: JsonProcessingException => {
         log.error("Parse exception:{}, returning Unknown() ", jpe);
-        Unknown()} 
+        Unknown()
+      }
     }
     log.debug("Unrecogniced message type:'{}', returning unknown", messageType)
     return Unknown()
   }
-  
-  def create(message: Message) : ByteString = {
-	 ByteString(message.typeName + ": " + mapper.writeValueAsString(message.data))
+
+  def create(message: Message): ByteString = {
+    ByteString(message.typeName + ": " + mapper.writeValueAsString(message.data) + "\n")
   }
 }
 

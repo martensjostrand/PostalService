@@ -17,9 +17,12 @@ object Build extends Build{
       libraryDependencies ++= Seq(
         "com.typesafe.akka" % "akka-actor" % akkaVersion,
         "com.typesafe.akka" % "akka-slf4j" % akkaVersion,
+        "com.typesafe.akka" % "akka-agent" % akkaVersion,
+        "com.typesafe.akka" % "akka-testkit" % akkaVersion % "test",
         "com.fasterxml.jackson.module" % "jackson-module-scala" % "2.1.1",
-        "ch.qos.logback" % "logback-classic" % "1.0.1",
-        "org.specs2" %% "specs2" % "1.12.2" % "test",
+        "org.scalatest" %% "scalatest" % "1.6.1" % "test",
+        "org.mockito" % "mockito-core" % "1.7" % "test",
+        "org.slf4j" % "slf4j-simple" % "1.6.1",
         "org.slf4j" % "slf4j-api" % "1.6.1")
     )
   )

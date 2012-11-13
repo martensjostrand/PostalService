@@ -9,9 +9,12 @@ import scala.collection._
 import scala.actors.Logger
 
 class TCPServer(port: Int) extends Actor with ActorLogging {
+  
+  val subscriptionStorage = context.actorOf(Props[SubscriptionStorage])
   val sockets = mutable.HashMap[String, List[SocketHandle]]()
-  val messageHandler = new MessageHandler(sockets)
+  val messageHandler = new MessageHandler(subscriptionStorage)
   val messageFactory = new MessageFactory()
+  
   override def preStart {
     log.debug("Listening for TCP connections on port {}", port)
     IOManager(context.system) listen new InetSocketAddress(port)

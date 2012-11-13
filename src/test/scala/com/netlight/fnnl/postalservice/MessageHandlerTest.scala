@@ -1,10 +1,9 @@
 package com.netlight.fnnl.postalservice
-import org.specs2.mutable.Specification
+import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.FlatSpec
 
-class MessageHandlerTest extends Specification {
-  "A MessageHandler" should {
-    "Register and use new listeners" in {
-      1 must be equalTo 1
-    }
+class MessageHandlerTest extends FlatSpec with ShouldMatchers {
+  "A MessageHandler" should "Register and use new listeners" in {
+      1 should equal(1)
   }
 }
