@@ -12,11 +12,18 @@ case class ActionData(@JsonProperty("command") command: String,
 @JsonCreator
 case class RegisterData(@JsonProperty("actions") actions: List[String]) extends MessageData
 
+@JsonCreator
+case class EventData(@JsonProperty("type") eventType: String, 
+                      @JsonProperty("msg") msg: String) extends MessageData
+
 /*sealed case class Message()*/
 sealed case class Message(data: MessageData, typeName: String)
 
 /* action: {"command": "walk", "args":[arg1 arg2 ...]} */
 case class Action(override val data: ActionData) extends Message(data, "action")
+
+/* event: {"type": "ignored", "msg": "What happened?"} */
+case class Event(override val data: EventData) extends Message(data, "event")
 
 /* register: {"host": "192.168.10", "port": 9010, "actions": ["walk", "look"]} */
 case class Register(override val data: RegisterData) extends Message(data, "register")

@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory
 
 case class AddSubscriber(socket: SocketHandle, actions: List[String])
 case class GetListeners(action: String)
+case class GetAllListeners()
 case class Subscribers(sockets: Set[SocketHandle])
 case class Subscription(socket:SocketHandle, action:String)
 
@@ -24,6 +25,10 @@ class SubscriptionStorage extends Actor with ActorLogging {
     case GetListeners(action) => {
       log.debug("Request to get listeneras for action: {}", action)
       sender ! getSubscribers(action)
+    }
+    case GetAllListeners() => {
+      log.debug("Request to get all listeneras")
+      sender ! getAllSubscribers()
     }
   }
 
@@ -46,6 +51,13 @@ class SubscriptionStorage extends Actor with ActorLogging {
     val sockets = for(subsrciption <- SubscriptionStorage.subscribers(); if action.equals(subsrciption.action)) yield subsrciption.socket
     // SubscriptionStorage.subscribers map {s => s.socket}
     log.debug("Found sockets:'{}' when searching by action: '{}'", sockets, action)
+    Subscribers(sockets)
+  }
+
+  private def getAllSubscribers() = {
+    val sockets = for(subsrciption <- SubscriptionStorage.subscribers()) yield subsrciption.socket
+    // SubscriptionStorage.subscribers map {s => s.socket}
+    log.debug("Found sockets:'{}' when searching all subscribers", sockets)
     Subscribers(sockets)
   }
 }

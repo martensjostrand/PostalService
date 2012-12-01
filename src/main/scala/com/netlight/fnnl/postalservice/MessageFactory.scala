@@ -35,6 +35,10 @@ class MessageFactory {
         val actionData = mapper.readValue(messageData, classOf[ActionData])
         return Action(actionData)
       }
+      if ("event".equals(messageType)) {
+        val eventData = mapper.readValue(messageData, classOf[EventData])
+        return Event(eventData)
+      }
     } catch {
       case jpe: JsonProcessingException => {
         log.error("Parse exception:{}, returning Unknown() ", jpe);

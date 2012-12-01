@@ -23,6 +23,10 @@ class MessageHandler(subscriptionStorage: ActorRef) {
     def getSubscribersBy(action: String) = {
       Await.result(subscriptionStorage ? GetListeners(action), timeout.duration).asInstanceOf[Subscribers]
     }
+
+    def getAllSubscribers() = {
+      Await.result(subscriptionStorage ? GetAllListeners(),timeout.duration).asInstanceOf[Subscribers]
+    }
     
     message match {
       case action: Action => {
@@ -33,6 +37,12 @@ class MessageHandler(subscriptionStorage: ActorRef) {
       }
       case Register(registration) => {
         subscriptionStorage ! AddSubscriber(socket, registration.actions)
+      }
+      case event: Event => {
+	val subscribers = getAllSubscribers()
+	subscribers.sockets.map{socket=>
+	  socket.write(messageFactory.create(event))
+	}
       }
       case Unknown() => {}
     }

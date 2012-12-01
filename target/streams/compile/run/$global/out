@@ -1,0 +1,22 @@
+[0m[[0minfo[0m] [0mRunning com.netlight.fnnl.postalservice.PostalService [0m
+[0m[[0mdebug[0m] [0mStarting sandboxed run...[0m
+[0m[[0mdebug[0m] [0mWaiting for threads to exit or System.exit to be called.[0m
+[0m[[0mdebug[0m] [0m  Classpath:[0m
+[0m[[0mdebug[0m] [0m	/Users/anfr/Google Drive/Netlight/FNNL/PostalService_new/target/scala-2.9.2/classes[0m
+[0m[[0mdebug[0m] [0m	/Users/anfr/.sbt/boot/scala-2.9.2/lib/scala-library.jar[0m
+[0m[[0mdebug[0m] [0m	/Users/anfr/.ivy2/cache/com.typesafe.akka/akka-actor/jars/akka-actor-2.0.jar[0m
+[0m[[0mdebug[0m] [0m	/Users/anfr/.ivy2/cache/com.typesafe.akka/akka-slf4j/jars/akka-slf4j-2.0.jar[0m
+[0m[[0mdebug[0m] [0m	/Users/anfr/.ivy2/cache/org.slf4j/slf4j-api/jars/slf4j-api-1.6.4.jar[0m
+[0m[[0mdebug[0m] [0m	/Users/anfr/.ivy2/cache/com.typesafe.akka/akka-agent/jars/akka-agent-2.0.jar[0m
+[0m[[0mdebug[0m] [0m	/Users/anfr/.ivy2/cache/org.scala-tools/scala-stm_2.9.1/jars/scala-stm_2.9.1-0.5.jar[0m
+[0m[[0mdebug[0m] [0m	/Users/anfr/.ivy2/cache/com.fasterxml.jackson.module/jackson-module-scala/jars/jackson-module-scala-2.1.1.jar[0m
+[0m[[0mdebug[0m] [0m	/Users/anfr/.ivy2/cache/com.fasterxml.jackson.core/jackson-core/jars/jackson-core-2.1.0.jar[0m
+[0m[[0mdebug[0m] [0m	/Users/anfr/.ivy2/cache/com.fasterxml.jackson.core/jackson-annotations/jars/jackson-annotations-2.1.0.jar[0m
+[0m[[0mdebug[0m] [0m	/Users/anfr/.ivy2/cache/com.fasterxml.jackson.core/jackson-databind/jars/jackson-databind-2.1.0.jar[0m
+[0m[[0mdebug[0m] [0m	/Users/anfr/.ivy2/cache/org.scalastuff/scalabeans/jars/scalabeans-0.3.jar[0m
+[0m[[0mdebug[0m] [0m	/Users/anfr/.ivy2/cache/com.thoughtworks.paranamer/paranamer/jars/paranamer-2.3.jar[0m
+[0m[[0mdebug[0m] [0m	/Users/anfr/.ivy2/cache/com.google.guava/guava/jars/guava-r09.jar[0m
+[0m[[0mdebug[0m] [0m	/Users/anfr/.ivy2/cache/org.slf4j/slf4j-simple/jars/slf4j-simple-1.6.1.jar[0m
+[0m[[0mdebug[0m] [0mWaiting for thread run-main to exit[0m
+[0m[[0mdebug[0m] [0m	Thread run-main exited.[0m
+[0m[[0mdebug[0m] [0mWaiting for thread default-akka.actor.default-dispatcher-1 to exit[0m
